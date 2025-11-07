@@ -7,6 +7,8 @@ plugins {
 group = 'net.thanachot'
 version = '1.0.0'
 
+apply plugin: 'maven-publish'
+
 repositories {
     mavenCentral()
     maven {
@@ -53,4 +55,33 @@ processResources {
     filesMatching('paper-plugin.yml') {
         expand props
     }
+}
+
+publishing {
+
+
+    publications {
+        ShiroVerseAPI(MavenPublication) {
+            groupId = group
+            artifactId = 'ShiroVerseAPI'
+            version = version
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/tantaihaha4487/ShiroVerseAPI"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+        maven {
+            name = 'ShiroVerseAPI'
+            url = layout.buildDirectory.dir("repo")
+        }
+    }
+
 }
