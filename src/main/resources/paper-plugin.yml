@@ -1,0 +1,4 @@
+name: ShiroVerseAPI
+version: '1.0.0'
+main: net.thanachot.shiroVerseAPI.ShiroVerseAPI
+api-version: '1.21'
