@@ -89,7 +89,7 @@ publishing {
     publications {
         gpr(MavenPublication) {
             from components.java
-            groupId = project.group.toString()
+            groupId = 'net.thanachot'
             artifactId = 'shiroverse-api'               // lowercase — avoids GitHub 422
             version = project.version.toString()
         }
@@ -101,7 +101,7 @@ publishing {
             // Use owner/repo URL for GitHub Packages
             url = uri("https://maven.pkg.github.com/tantaihaha4487/ShiroVerseAPI")
             credentials {
-                username = ${{ github.actor }}
+                username = "tantaihaha4487"
                 password = ${{ secrets.GITHUB_TOKEN }}
             }
         }
