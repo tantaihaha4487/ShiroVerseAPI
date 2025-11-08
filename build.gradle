@@ -101,8 +101,8 @@ publishing {
             // Use owner/repo URL for GitHub Packages
             url = uri("https://maven.pkg.github.com/tantaihaha4487/ShiroVerseAPI")
             credentials {
-                username = ghUser
-                password = ghToken
+                username = ${{ github.actor }}
+                password = ${{ secrets.GITHUB_TOKEN }}
             }
         }
     }
