@@ -72,7 +72,7 @@ publishing {
     publications {
         gpr(MavenPublication) {
             groupId = group as Publication
-            artifactId = 'ShiroVerseAPI' as Publication
+            artifactId = "ShiroVerseAPI"
             version = version as Publication
             from(components.java)
         }
