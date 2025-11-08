@@ -1,14 +1,12 @@
 plugins {
     id 'java'
-    id("xyz.jpenilla.run-paper") version "2.3.1"
-    id("io.papermc.paperweight.userdev") version "1.7.1"
-    id("maven-publish")
+    id "xyz.jpenilla.run-paper" version "2.3.1"
+    id "io.papermc.paperweight.userdev" version "1.7.1"
+    id 'maven-publish'
 }
 
-
-group = 'net.thanachot.shiroVerseAPI'
+group = 'net.thanachot'
 version = '1.0.0'
-
 
 repositories {
     mavenCentral()
@@ -19,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    // single-string style used by paperweight plugin API — not deprecated
     paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
 }
 
@@ -57,24 +56,54 @@ processResources {
     }
 }
 
+/*
+ * Publish configuration
+ *
+ * IMPORTANT:
+ * - Make sure to set GITHUB_ACTOR and GITHUB_TOKEN environment variables (in GitHub Actions),
+ *   or set gpr.user / gpr.key in ~/.gradle/gradle.properties for local publishing.
+ * - We fail fast with a clear message if credentials are missing, because Gradle requires
+ *   credentials.username to have a configured value at configuration time.
+ */
+def ghUser = System.getenv("GITHUB_ACTOR") ?: (project.findProperty("gpr.user") ?: null)
+def ghToken = System.getenv("GITHUB_TOKEN") ?: (project.findProperty("gpr.key") ?: null)
+
+if (!ghUser || !ghToken) {
+    throw new GradleException("""
+        GitHub Packages publish credentials not configured.
+        Set environment variables GITHUB_ACTOR and GITHUB_TOKEN (recommended for Actions),
+        or add gpr.user and gpr.key to ~/.gradle/gradle.properties for local runs.
+
+        Example (workflow):
+          env:
+            GITHUB_ACTOR: \${{ github.actor }}
+            GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+
+        Example (local ~/.gradle/gradle.properties) - NOT recommended for secrets:
+          gpr.user=your-username
+          gpr.key=ghp_xxx...
+    """.stripIndent())
+}
 
 publishing {
+    publications {
+        gpr(MavenPublication) {
+            from components.java
+            groupId = project.group.toString()
+            artifactId = 'shiroverse-api'               // lowercase — avoids GitHub 422
+            version = project.version.toString()
+        }
+    }
+
     repositories {
         maven {
             name = "GitHubPackages"
+            // Use owner/repo URL for GitHub Packages
             url = uri("https://maven.pkg.github.com/tantaihaha4487/ShiroVerseAPI")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                username = ghUser
+                password = ghToken
             }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
-            groupId = project.group
-            artifactId = project.name
-            version = project.version
-            from(components.java)
         }
     }
 }
