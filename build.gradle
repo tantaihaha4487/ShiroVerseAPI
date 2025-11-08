@@ -6,7 +6,7 @@ plugins {
 }
 
 
-group = 'net.thanachot'
+group = 'tantaihaha'
 version = '1.0.0'
 
 
