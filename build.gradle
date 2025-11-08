@@ -71,9 +71,9 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            groupId = group as Publication
+            groupId = group
             artifactId = "ShiroVerseAPI"
-            version = version as Publication
+            version = version
             from(components.java)
         }
     }
