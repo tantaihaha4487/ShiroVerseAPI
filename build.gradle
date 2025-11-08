@@ -6,7 +6,7 @@ plugins {
 }
 
 
-group = 'tantaihaha'
+group = 'net.thanachot.shiroVerseAPI'
 version = '1.0.0'
 
 
@@ -59,23 +59,22 @@ processResources {
 
 
 publishing {
-  publications {
-    gpr(MavenPublication) {
-      from components.java
-      groupId = 'net.tantaihaha'         // use a normal reverse-domain groupId
-      artifactId = 'ShiroVerseAPI'     // lowercase! use hyphens instead of CamelCase
-      version = '1.0.0'
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/tantaihaha4487/ShiroVerseAPI")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
-  }
-  repositories {
-    maven {
-      name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/${System.getenv('GITHUB_REPOSITORY')}")
-      credentials {
-        username = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.user")
-        password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key")
-      }
+    publications {
+        gpr(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+            from(components.java)
+        }
     }
-  }
 }
-
