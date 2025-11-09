@@ -1,0 +1,31 @@
+install:
+  # Clean and assemble the project (skip tests if desired)
+  - ./gradlew clean assemble -x test
+
+  # Force rename any -dev jar to plain artifact name
+  - bash -lc |
+    # Extract version from build.gradle
+    VERSION=$(sed -n "s/.*version *= *['\"]\([^'\"]*\)['\"].*/\1/p" build.gradle)
+    if [ -z "$VERSION" ]; then VERSION=$(git rev-parse --short HEAD); fi
+    
+    # Find the produced jar with -dev classifier
+    DEVJAR=$(ls build/libs/*-dev.jar 2>/dev/null || true)
+    if [ -n "$DEVJAR" ]; then
+    echo "Found -dev jar: $DEVJAR"
+    # Rename it to standard Maven style: shiroverseapi-<version>.jar
+    mv "$DEVJAR" "build/libs/shiroverseapi-$VERSION.jar"
+    echo "Renamed to: build/libs/shiroverseapi-$VERSION.jar"
+    else
+    echo "No -dev jar found, ensure your build produces a jar in build/libs"
+    ls -la build/libs || true
+    fi
+
+# Optional: cache Gradle and Maven local repos to speed up rebuilds
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/.m2
+
+# Optional: if your project requires a specific JDK (you use 21)
+jdk:
+  - openjdk-21
