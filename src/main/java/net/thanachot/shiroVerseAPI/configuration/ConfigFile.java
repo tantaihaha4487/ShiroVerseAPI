@@ -34,11 +34,15 @@ public class ConfigFile {
 
     /**
      * Saves the default configuration file from the plugin's resources.
+     * If the file does not exist, it will be created and the in-memory configuration will be reloaded.
      *
-     * @return The ConfigManager instance.
+     * @return The ConfigFile instance.
      */
     public ConfigFile addDefaultConfig() {
-        plugin.saveDefaultConfig();
+        if (!configFile.exists()) {
+            plugin.saveResource(configFile.getName(), false);
+            this.yamlConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        }
         return this;
     }
 
