@@ -42,6 +42,11 @@ public class ConfigFile {
         return this;
     }
 
+    public ConfigFile save() throws IOException {
+        getConfig().save(configFile);
+        return this;
+    }
+
     /**
      * Reloads the configuration file.
      *
