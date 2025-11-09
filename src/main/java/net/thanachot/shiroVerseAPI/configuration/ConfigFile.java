@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Manages plugin configuration files.
  */
-public class ConfigManager {
+public class ConfigFile {
 
     private final Plugin plugin;
     private final File configFile;
@@ -19,12 +19,12 @@ public class ConfigManager {
     /**
      * Creates a new ConfigManager.
      *
-     * @param plugin The plugin instance.
-     * @param configFileName The name of the configuration file.
+     * @param plugin   The plugin instance.
+     * @param fileName The name of the configuration file.
      */
-    public ConfigManager(Plugin plugin, String configFileName) {
+    public ConfigFile(Plugin plugin, String fileName) {
         this.plugin = plugin;
-        this.configFile = getPluginConfigPath(plugin, configFileName);
+        this.configFile = getPluginConfigPath(plugin, fileName);
         this.yamlConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         if (!plugin.getDataFolder().exists()) {
@@ -37,7 +37,7 @@ public class ConfigManager {
      *
      * @return The ConfigManager instance.
      */
-    public ConfigManager addDefaultConfig() {
+    public ConfigFile addDefaultConfig() {
         plugin.saveDefaultConfig();
         return this;
     }
@@ -49,10 +49,30 @@ public class ConfigManager {
      * @throws IOException                   if an I/O error occurs.
      * @throws InvalidConfigurationException if the configuration is invalid.
      */
-    public ConfigManager reload() throws IOException, InvalidConfigurationException {
+    public ConfigFile reload() throws IOException, InvalidConfigurationException {
         getConfig().load(configFile);
         return this;
     }
+
+
+    /**
+     * Reloads the configuration file.
+     *
+     * @param callback The callback to run after reloading the configuration file.
+     * @return The ConfigManager instance.
+     * @throws IOException                   if an I/O error occurs.
+     * @throws InvalidConfigurationException if the configuration is invalid.
+     */
+    public ConfigFile reload(Runnable callback) throws IOException, InvalidConfigurationException {
+        getConfig().load(configFile);
+
+        if (callback != null) {
+            callback.run();
+        }
+
+        return this;
+    }
+
 
     /**
      * Gets the YamlConfiguration instance.
