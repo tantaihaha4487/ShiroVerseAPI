@@ -92,6 +92,10 @@ publishing {
             groupId = 'net.thanachot'
             artifactId = 'shiroverse-api'               // lowercase — avoids GitHub 422
             version = project.version.toString()
+            artifact(tasks.named('jar')) {
+                // make sure no classifier is attached
+                classifier = null
+            }
         }
     }
 
