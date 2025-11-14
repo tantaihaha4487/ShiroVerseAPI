@@ -1,5 +1,6 @@
+# **This project is discontinued. 2025-11-14**
+---
 # ShiroVerseAPI
-
 [![JitPack](https://img.shields.io/jitpack/v/github/tantaihaha4487/ShiroVerseAPI.svg)](https://jitpack.io/#tantaihaha4487/ShiroVerseAPI)
 
 Add JitPack repository:
