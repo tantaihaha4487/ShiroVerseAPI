@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'net.thanachot'
-version = '1.21-1.0.2'
+version = '1.21-1.0.2a'
 
 repositories {
     mavenCentral()
@@ -90,7 +90,7 @@ publishing {
         gpr(MavenPublication) {
             from components.java
             groupId = 'net.thanachot'
-            artifactId = 'shiroverse-api'               // lowercase — avoids GitHub 422
+            artifactId = 'shiroverse'               // lowercase — avoids GitHub 422
             version = project.version.toString()
             artifact(tasks.named('jar')) {
                 // make sure no classifier is attached

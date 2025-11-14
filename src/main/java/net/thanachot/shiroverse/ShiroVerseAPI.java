@@ -1,4 +1,4 @@
-package net.thanachot.shiroVerseAPI;
+package net.thanachot.shiroverse;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

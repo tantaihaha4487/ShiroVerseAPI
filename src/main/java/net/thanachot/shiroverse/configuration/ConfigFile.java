@@ -1,4 +1,4 @@
-package net.thanachot.shiroVerseAPI.configuration;
+package net.thanachot.shiroverse.configuration;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
